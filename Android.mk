@@ -30,7 +30,7 @@ common_sqlite_flags := \
 	-DSQLITE_DEFAULT_FILE_PERMISSIONS=0600 \
 	-Dfdatasync=fdatasync
 
-common_src_files := wrapper/sqlite3.c
+common_src_files := wrapper.c
 
 ifeq ($(WITH_QC_PERF),true)
 common_sqlite_flags += -DQC_PERF
