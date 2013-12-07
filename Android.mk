@@ -28,9 +28,8 @@ common_sqlite_flags := \
 	-DSQLITE_OMIT_COMPILEOPTION_DIAGS \
 	-DSQLITE_OMIT_LOAD_EXTENSION \
 	-DSQLITE_DEFAULT_FILE_PERMISSIONS=0600 \
-	-Dfdatasync=fdatasync
 
-common_src_files := wrapper.c
+common_src_files := dist/sqlite3.c
 
 ifeq ($(WITH_QC_PERF),true)
 common_sqlite_flags += -DQC_PERF
@@ -39,21 +38,17 @@ endif
 # the device library
 include $(CLEAR_VARS)
 
-LOCAL_SRC_FILES := $(common_src_files) \
-	asm/fdatasync.S \
-	asm/pread64.S \
-	asm/pwrite64.S \
+LOCAL_SRC_FILES := $(common_src_files)
 
 ifneq ($(TARGET_ARCH),arm)
 LOCAL_LDLIBS += -lpthread -ldl
 endif
 
-LOCAL_CFLAGS += $(common_sqlite_flags) -DUSE_PREAD64 -Dfdatasync=fdatasync
+LOCAL_CFLAGS += $(common_sqlite_flags)
 
 LOCAL_SHARED_LIBRARIES := libdl
 
 LOCAL_MODULE:= libsqlite
-LOCAL_C_INCLUDES += $(LOCAL_PATH)/asm/include
 LOCAL_SHARED_LIBRARIES += liblog \
             libicuuc \
             libicui18n \
